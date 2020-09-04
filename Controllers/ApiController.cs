@@ -24,17 +24,16 @@ namespace ContactsAPI.Controllers
             _database = context;
         }
 
+        /*** CONTACTS REQUESTS ***/
 
-        [HttpGet]
-        [Route("contacts")]
+        [HttpGet("contacts")]
         public async Task<ActionResult<IEnumerable<ContactModel>>> GetContacts()
         {
             return await _database.Contacts.ToListAsync();
         }
 
-        [HttpGet("{id}")]
-        [Route("contacts")]
-        public async Task<ActionResult<ContactModel>> GetContact(int id)
+        [HttpGet("contacts/{id}")]
+        public async Task<ActionResult<ContactModel>> GetContact(long id)
         {
             var contact = await _database.Contacts.FindAsync(id);
 
@@ -46,76 +45,17 @@ namespace ContactsAPI.Controllers
             return contact;
         }
 
-        [HttpGet]
-        [Route("skillNames")]
-        public async Task<ActionResult<SkillNameModel>> GetSkillNames(long id)
-        {
-            var skillName = await _database.SkillNames.FindAsync(id);
-
-            if (skillName == null)
-            {
-                return NotFound();
-            }
-
-            return skillName;
-        }
-
-        [HttpGet]
-        [Route("skillLevels")]
-        public async Task<ActionResult<SkillLevelModel>> GetSkillLevels(long id)
-        {
-            var skillLevel = await _database.SkillLevels.FindAsync(id);
-
-            if (skillLevel == null)
-            {
-                return NotFound();
-            }
-
-            return skillLevel;
-        }
         [HttpPost]
-        [Route("contacts")]
         [AllowAnonymous]
         public async Task<ActionResult<ContactModel>> PostContact(ContactModel contact)
         {
             _database.Contacts.Add(contact);
             await _database.SaveChangesAsync();
-            
+
             return CreatedAtAction(nameof(GetContact), new { id = contact.Id }, contact);
         }
 
-        [HttpPost]
-        [Route("skillNames")]
-        [AllowAnonymous]
-        public async Task<ActionResult<SkillNameModel>> PostSkill([FromBody] SkillNameModel skill)
-        {
-            if (_database.SkillNames.Any(s => s.Name == skill.Name))
-            {
-                return Conflict();
-            }
-            _database.SkillNames.Add(skill);
-            await _database.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetSkillNames), new { id = skill.Id }, skill);
-        }
-
-        [HttpPost]
-        [Route("skillLevels")]
-        [AllowAnonymous]
-        public async Task<ActionResult<SkillLevelModel>> PostLevel([FromBody] SkillLevelModel level)
-        {
-            if (_database.SkillLevels.Any(s => s.Level == level.Level))
-            {
-                return Conflict();
-            }
-            _database.SkillLevels.Add(level);
-            await _database.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetSkillLevels), new { id = level.Id }, level);
-        }
-
-        [HttpPut]
-        [Route("contacts")]
+        [HttpPut("{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> PutContact(long id, ContactModel contact)
         {
@@ -126,7 +66,7 @@ namespace ContactsAPI.Controllers
             _database.Entry(contact).State = EntityState.Modified;
             try
             {
-                await _database.SaveChangesAsync(); 
+                await _database.SaveChangesAsync();
             }
             catch
             {
@@ -141,5 +81,80 @@ namespace ContactsAPI.Controllers
             }
             return NoContent();
         }
+
+        /*** SKILLNAMES REQUESTS ***/
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<SkillNameModel>>> GetSkillNames()
+        {
+            return await _database.SkillNames.ToListAsync();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<SkillNameModel>> GetSkillNames(long id)
+        {
+            var skillName = await _database.SkillNames.FindAsync(id);
+
+            if (skillName == null)
+            {
+                return NotFound();
+            }
+
+            return skillName;
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult<SkillNameModel>> PostSkill([FromBody] SkillNameModel skill)
+        {
+            if (_database.SkillNames.Any(s => s.Name == skill.Name))
+            {
+                return Conflict();
+            }
+            _database.SkillNames.Add(skill);
+            await _database.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetSkillNames), new { id = skill.Id }, skill);
+        }
+
+        /*** SKILLLEVELS REQUESTS ***/
+
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<SkillLevelModel>>> GetSkillLevels()
+        {
+            return await _database.SkillLevels.ToListAsync();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<SkillLevelModel>> GetSkillLevels(long id)
+        {
+            var skillLevel = await _database.SkillLevels.FindAsync(id);
+
+            if (skillLevel == null)
+            {
+                return NotFound();
+            }
+
+            return skillLevel;
+        }
+
+
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult<SkillLevelModel>> PostLevel([FromBody] SkillLevelModel level)
+        {
+            if (_database.SkillLevels.Any(s => s.Level == level.Level))
+            {
+                return Conflict();
+            }
+            _database.SkillLevels.Add(level);
+            await _database.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetSkillLevels), new { id = level.Id }, level);
+        }
+
+
     }
 }
