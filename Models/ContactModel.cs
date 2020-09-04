@@ -1,10 +1,21 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-public class ContactsItem
+
+public class Skill
+{
+    public long Id { get; set; }
+    [ForeignKey("SkillNameModel")]
+    public String Name { get; set; }
+    [ForeignKey("SkillLevelModel")]
+    public String Level { get; set; }
+}
+public class ContactModel
 {
     public long Id { get; set; }
     [Required]
@@ -19,5 +30,5 @@ public class ContactsItem
     public string Email { get; set; }
     [Required]
     public string Phone { get; set; }
-    public SkillsItem Skill{ get; set; }   
+    public virtual ICollection<Skill> Skills { get; set; }   
 }
