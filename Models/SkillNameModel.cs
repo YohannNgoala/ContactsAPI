@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 public class SkillNameModel
 {
-    public long Id { get; set; }
-    [Required]
+    [Key]
     public String Name { get; set; }
 }

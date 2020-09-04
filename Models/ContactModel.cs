@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 
 public class Skill
 {
-    public long Id { get; set; }
-    [ForeignKey("SkillNameModel")]
+    [Key]
+    //Foreign Key for SkillNameModel
     public String Name { get; set; }
-    [ForeignKey("SkillLevelModel")]
+//    public SkillNameModel SkillNameModel {get; set; }
+    
     public String Level { get; set; }
+   // public SkillLevelModel skillLevelModel { get; set; }
 }
 public class ContactModel
 {
@@ -30,5 +32,6 @@ public class ContactModel
     public string Email { get; set; }
     [Required]
     public string Phone { get; set; }
-    public virtual ICollection<Skill> Skills { get; set; }   
+    public virtual ICollection<Skill> Skills { get; set; }
+
 }

@@ -14,32 +14,5 @@ namespace ContactsApi.Models
             : base(options)
         {
         }
-
-//        public List<ContactModel> getAllContacts() => Contacts.ToList();
-        //public List<SkillNameModel> getSkillNames() => SkillNames.ToList();
-        //public List<SkillLevelModel> getSkillLevels() => SkillLevels.ToList();
-        //public void PostContact(ContactModel contact)
-        //{
-        //    Contacts.Add(contact);
-        //    this.SaveChanges();
-        //    return;
-        //}
-
-        //public bool PostSkill(SkillNameModel skill)
-        //{
-        //    if (SkillNames.Any(s => s.Name == skill.Name)){ return false; }       
-        //    SkillNames.Add(skill);
-        //    this.SaveChanges();
-        //    return true;
-        //}
-
-        //public bool PostLevel(SkillLevelModel level)
-        //{
-        //    if (SkillLevels.Any(s => s.Level == level.Level)) { return false; }
-        //    SkillLevels.Add(level);
-        //    this.SaveChanges();
-        //    return true;
-        //}
-
     }
 }
