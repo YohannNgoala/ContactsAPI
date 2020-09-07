@@ -47,27 +47,27 @@ namespace ContactsAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<ContactModel>> PostContact(ContactModel contact)
         {
-            if (contact.Skills != null)
-            {
-                List<String> nameList = new List<string>();
+            //if (contact.Skills != null)
+            //{
+            //    List<String> nameList = new List<string>();
 
-                foreach (var skill in contact.Skills)
-                {
-                    if (!_context.SkillNames.Any(c => c.Name == skill.Name)
-                        || !_context.SkillLevels.Any(c => c.Level == skill.Level))
-                        return Conflict();
+            //    foreach (var skill in contact.Skills)
+            //    {
+            //        if (!_context.SkillNames.Any(c => c.Name == skill.Name)
+            //            || !_context.SkillLevels.Any(c => c.Level == skill.Level))
+            //            return Conflict();
 
-                    nameList.Add(skill.Name);
-                }
+            //        nameList.Add(skill.Name);
+            //    }
 
-                if (nameList.Count != nameList.Distinct().Count())
-                    return Conflict();
+            //    if (nameList.Count != nameList.Distinct().Count())
+            //        return Conflict();
 
-            }
+            //}
             _context.Contacts.Add(contact);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetContact), new { id = contact.Id }, contact);
+            return CreatedAtAction(nameof(GetContact), new { id = contact.ContactModelId }, contact);
         }
 
 
@@ -75,7 +75,7 @@ namespace ContactsAPI.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> PutContact(long id, ContactModel contact)
         {
-            if (id != contact.Id)
+            if (id != contact.ContactModelId)
             {
                 return BadRequest();
             }
@@ -87,7 +87,7 @@ namespace ContactsAPI.Controllers
             }
             catch
             {
-                if (!_context.Contacts.Any(c => c.Id == contact.Id))
+                if (!_context.Contacts.Any(c => c.ContactModelId == contact.ContactModelId))
                 {
                     return NotFound();
                 }
