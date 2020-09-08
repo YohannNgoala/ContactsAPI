@@ -17,6 +17,20 @@ using System.Threading.Tasks;
 //    public String Level { get; set; }
 //    // public SkillLevelModel skillLevelModel { get; set; }
 //}
+
+public class PutContactModel
+{
+    [Required]
+    public long ContactModelId { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string FullName { get; set; }
+    public string Address { get; set; }
+    public string Email { get; set; }
+    public string Phone { get; set; }
+}
+
+
 public class ContactModel
 {
     [Key]

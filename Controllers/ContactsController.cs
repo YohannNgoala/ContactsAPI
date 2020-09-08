@@ -78,9 +78,13 @@ namespace ContactsAPI.Controllers
         {
             if (id != contact.ContactModelId)
             {
-                return BadRequest();
+                return BadRequest("Contact Id missmatch");
             }
-         
+            if (!_context.Contacts.Any(a => a.ContactModelId == contact.ContactModelId))
+            {
+                return NotFound("Contact doesn't exist");
+            }
+
             _context.Entry(contact).State = EntityState.Modified;
             try
             {
@@ -97,7 +101,7 @@ namespace ContactsAPI.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok();
         }
 
         /// <summary>
@@ -118,5 +122,6 @@ namespace ContactsAPI.Controllers
 
             return contactModel;
         }
+
     }
 }
