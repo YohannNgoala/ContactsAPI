@@ -25,11 +25,16 @@ namespace ContactsAPI.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Retrieves all contacts from the list of contacts
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ContactModel>>> GetContacts()
         {
             return await _context.Contacts.ToListAsync();
         }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ContactModel>> GetContact(long id)
@@ -40,37 +45,33 @@ namespace ContactsAPI.Controllers
             {
                 return NotFound();
             }
-
+            var skills = _context.Skills.Where(w => w.ContactModelId == id).ToList();
+            foreach (var skill in skills)
+            { 
+                contact.SkillModel.Add(skill); 
+            }
             return contact;
         }
 
+        /// <summary>
+        /// Insert a new contact in the list
+        /// </summary>
+        /// <param name=<em>"contact"</em>>New contact to be inserted</param>
         [HttpPost]
         public async Task<ActionResult<ContactModel>> PostContact(ContactModel contact)
         {
-            //if (contact.Skills != null)
-            //{
-            //    List<String> nameList = new List<string>();
-
-            //    foreach (var skill in contact.Skills)
-            //    {
-            //        if (!_context.SkillNames.Any(c => c.Name == skill.Name)
-            //            || !_context.SkillLevels.Any(c => c.Level == skill.Level))
-            //            return Conflict();
-
-            //        nameList.Add(skill.Name);
-            //    }
-
-            //    if (nameList.Count != nameList.Distinct().Count())
-            //        return Conflict();
-
-            //}
+           
             _context.Contacts.Add(contact);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetContact), new { id = contact.ContactModelId }, contact);
         }
 
-
+        /// <summary>
+        /// Change a single contact in the list
+        /// </summary>
+        /// <param name=<em>"id"</em>>The id of the contact to be changed</param>
+        /// <param name=<em>"value"</em>>The new values</param>
         [HttpPut("{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> PutContact(long id, ContactModel contact)
@@ -99,6 +100,10 @@ namespace ContactsAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Delete an contact from the list
+        /// </summary>
+        /// <param name=<em>"id"</em>>id of the contact to be deleted</param>
         [HttpDelete("{id}")]
         public async Task<ActionResult<ContactModel>> DeleteContactModel(long id)
         {

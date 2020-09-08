@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ContactsAPI</name>
+    </assembly>
+    <members>
+        <member name="M:ContactsAPI.Controllers.ContactsController.GetContacts">
+            <summary>
+            Retrieves all contacts from the list of contacts
+            </summary>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:ContactsAPI.Controllers.ContactsController.PostContact(ContactModel)" -->
+        <!-- Badly formed XML comment ignored for member "M:ContactsAPI.Controllers.ContactsController.PutContact(System.Int64,ContactModel)" -->
+        <!-- Badly formed XML comment ignored for member "M:ContactsAPI.Controllers.ContactsController.DeleteContactModel(System.Int64)" -->
+    </members>
+</doc>

@@ -15,6 +15,6 @@ public class SkillModel
     //ForeignKey
     [Required]
     public long? ContactModelId { get; set; }
-    public virtual ContactModel ContactModel { get; set; }
+    //public virtual ContactModel ContactModel { get; set; }
 }
 
