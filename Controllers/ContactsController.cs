@@ -28,14 +28,16 @@ namespace ContactsAPI.Controllers
         /// <summary>
         /// Retrieves all contacts from the list of contacts
         /// </summary>
-        /// <returns></returns>
+        /// <remarks>To get the skills details, use GET request with Contacts/{id} </remarks>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ContactModel>>> GetContacts()
         {
             return await _context.Contacts.ToListAsync();
         }
 
-
+        /// <summary>
+        /// Retrieves details of a contact from his id
+        /// </summary>
         [HttpGet("{id}")]
         public async Task<ActionResult<ContactModel>> GetContact(long id)
         {
@@ -56,7 +58,6 @@ namespace ContactsAPI.Controllers
         /// <summary>
         /// Insert a new contact in the list
         /// </summary>
-        /// <param name=<em>"contact"</em>>New contact to be inserted</param>
         [HttpPost]
         public async Task<ActionResult<ContactModel>> PostContact(ContactModel contact)
         {
@@ -68,10 +69,8 @@ namespace ContactsAPI.Controllers
         }
 
         /// <summary>
-        /// Change a single contact in the list
+        /// Change a single contact in the list from ID
         /// </summary>
-        /// <param name=<em>"id"</em>>The id of the contact to be changed</param>
-        /// <param name=<em>"value"</em>>The new values</param>
         [HttpPut("{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> PutContact(long id, ContactModel contact)
@@ -84,7 +83,6 @@ namespace ContactsAPI.Controllers
             {
                 return NotFound("Contact doesn't exist");
             }
-
             _context.Entry(contact).State = EntityState.Modified;
             try
             {
@@ -105,9 +103,8 @@ namespace ContactsAPI.Controllers
         }
 
         /// <summary>
-        /// Delete an contact from the list
+        /// Delete a contact from the list
         /// </summary>
-        /// <param name=<em>"id"</em>>id of the contact to be deleted</param>
         [HttpDelete("{id}")]
         public async Task<ActionResult<ContactModel>> DeleteContactModel(long id)
         {
@@ -122,6 +119,5 @@ namespace ContactsAPI.Controllers
 
             return contactModel;
         }
-
     }
 }

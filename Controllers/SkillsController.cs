@@ -20,14 +20,18 @@ namespace ContactsAPI.Controllers
         {
             _context = context;
         }
-
+        /// <summary>
+        /// Retrieves all skills from the list of skills
+        /// </summary>
         // GET: api/Skills
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SkillModel>>> GetSkill()
         {
             return await _context.Skills.ToListAsync();
         }
-
+        /// <summary>
+        /// Retrieves details of a skill from its id
+        /// </summary>
         // GET: api/Skills/5
         [HttpGet("{id}")]
         public async Task<ActionResult<SkillModel>> GetSkill(long id)
@@ -42,6 +46,10 @@ namespace ContactsAPI.Controllers
             return skill;
         }
 
+
+        /// <summary>
+        /// Change a single skill in the list from its ID
+        /// </summary>
         // PUT: api/Skills/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -85,6 +93,12 @@ namespace ContactsAPI.Controllers
             return Ok(skill);
         }
 
+
+        /// <summary>
+        /// Insert a new skill in the list
+        /// </summary>
+        /// <remarks>The skill's ContactModelId should match with an existing contact's ContactModelId.
+        /// The a contact can't have two skills with the same name</remarks>
         // POST: api/Skills
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -102,6 +116,10 @@ namespace ContactsAPI.Controllers
             return CreatedAtAction("GetSkill", new { id = skill.Id }, skill);
         }
 
+
+        /// <summary>
+        /// Delete a skill from the list
+        /// </summary>
         // DELETE: api/Skills/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<SkillModel>> DeleteSkill(long id)

@@ -8,10 +8,54 @@
             <summary>
             Retrieves all contacts from the list of contacts
             </summary>
-            <returns></returns>
+            <remarks>To get the skills details, use GET request with Contacts/{id} </remarks>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:ContactsAPI.Controllers.ContactsController.PostContact(ContactModel)" -->
-        <!-- Badly formed XML comment ignored for member "M:ContactsAPI.Controllers.ContactsController.PutContact(System.Int64,ContactModel)" -->
-        <!-- Badly formed XML comment ignored for member "M:ContactsAPI.Controllers.ContactsController.DeleteContactModel(System.Int64)" -->
+        <member name="M:ContactsAPI.Controllers.ContactsController.GetContact(System.Int64)">
+            <summary>
+            Retrieves details of a contact from his id
+            </summary>
+        </member>
+        <member name="M:ContactsAPI.Controllers.ContactsController.PostContact(ContactModel)">
+            <summary>
+            Insert a new contact in the list
+            </summary>
+        </member>
+        <member name="M:ContactsAPI.Controllers.ContactsController.PutContact(System.Int64,ContactModel)">
+            <summary>
+            Change a single contact in the list from ID
+            </summary>
+        </member>
+        <member name="M:ContactsAPI.Controllers.ContactsController.DeleteContactModel(System.Int64)">
+            <summary>
+            Delete a contact from the list
+            </summary>
+        </member>
+        <member name="M:ContactsAPI.Controllers.SkillsController.GetSkill">
+            <summary>
+            Retrieves all skills from the list of skills
+            </summary>
+        </member>
+        <member name="M:ContactsAPI.Controllers.SkillsController.GetSkill(System.Int64)">
+            <summary>
+            Retrieves details of a skill from its id
+            </summary>
+        </member>
+        <member name="M:ContactsAPI.Controllers.SkillsController.PutSkill(System.Int64,SkillModel)">
+            <summary>
+            Change a single skill in the list from its ID
+            </summary>
+        </member>
+        <member name="M:ContactsAPI.Controllers.SkillsController.PostSkill(SkillModel)">
+            <summary>
+            Insert a new skill in the list
+            </summary>
+            <remarks>The skill's ContactModelId should match with an existing contact's ContactModelId
+            The a contact can't have two skills with the same name</remarks>
+        </member>
+        <member name="M:ContactsAPI.Controllers.SkillsController.DeleteSkill(System.Int64)">
+            <summary>
+            Delete a skill from the list
+            </summary>
+        </member>
     </members>
 </doc>

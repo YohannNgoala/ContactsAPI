@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using ContactsApi.Models;
 using Microsoft.OpenApi.Models;
+using System.IO;
 
 namespace ContactsAPI
 {
@@ -36,6 +37,10 @@ namespace ContactsAPI
             services.AddSwaggerGen((options) =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Contacts Api", Version = "v1" });
+
+                var filepath = Path.Combine(System.AppContext.BaseDirectory, "ContactsApi.xml");
+               
+                options.IncludeXmlComments(filepath);
             });
         }
 
