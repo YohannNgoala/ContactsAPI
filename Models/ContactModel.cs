@@ -24,5 +24,6 @@ public class ContactModel
     [Required]
     public string Phone { get; set; }
     public virtual ICollection<SkillModel> SkillModel { get; set; }
+    public string UserName { get; set; }
 
 }

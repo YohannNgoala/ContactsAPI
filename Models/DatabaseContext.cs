@@ -9,6 +9,7 @@ namespace ContactsApi.Models
     {
         public DbSet<ContactModel> Contacts { get; set; }
         public DbSet<SkillModel> Skills { get; set; }
+        public DbSet<UserModel> Users { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)

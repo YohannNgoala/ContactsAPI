@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ContactsApi.Models;
+using ContactsAPI.Handlers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ContactsAPI.Controllers
 {
+    [Authorize]
     [Route("api/Contacts")]
     [ApiController]
     public class ContactsController : ControllerBase
@@ -30,8 +32,9 @@ namespace ContactsAPI.Controllers
         /// </summary>
         /// <remarks>To get the skills details, use GET request with Contacts/{id} </remarks>
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<ContactModel>>> GetContacts()
-        {
+        {            
             return await _context.Contacts.ToListAsync();
         }
 
@@ -39,6 +42,7 @@ namespace ContactsAPI.Controllers
         /// Retrieves details of a contact from his id
         /// </summary>
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<ContactModel>> GetContact(long id)
         {
             var contact = await _context.Contacts.FindAsync(id);
@@ -57,11 +61,18 @@ namespace ContactsAPI.Controllers
 
         /// <summary>
         /// Insert a new contact in the list
+        /// <remarks>
+        /// /!\ Leave the Username and ContactModelId by default /!\
+        /// </remarks>
         /// </summary>
         [HttpPost]
         public async Task<ActionResult<ContactModel>> PostContact(ContactModel contact)
         {
-           
+           if (contact.UserName != null || contact.ContactModelId != 0)
+            {
+                return Conflict("You must leave Username and ContactModelId by default ('string' and 0)");
+            }
+            contact.UserName = HttpContext.User.Identity.Name;
             _context.Contacts.Add(contact);
             await _context.SaveChangesAsync();
 
@@ -82,6 +93,10 @@ namespace ContactsAPI.Controllers
             if (!_context.Contacts.Any(a => a.ContactModelId == contact.ContactModelId))
             {
                 return NotFound("Contact doesn't exist");
+            }
+            if (_context.Contacts.Where(c => c.ContactModelId == id).First().UserName != HttpContext.User.Identity.Name)
+            {
+                return BadRequest("This is not your contact");
             }
             _context.Entry(contact).State = EntityState.Modified;
             try
@@ -113,7 +128,10 @@ namespace ContactsAPI.Controllers
             {
                 return NotFound();
             }
-
+            if (_context.Contacts.Where(c => c.ContactModelId == id).First().UserName != HttpContext.User.Identity.Name)
+            {
+                return BadRequest("This is not your contact");
+            }
             _context.Contacts.Remove(contactModel);
             await _context.SaveChangesAsync();
 

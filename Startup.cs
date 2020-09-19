@@ -14,6 +14,8 @@ using Microsoft.EntityFrameworkCore;
 using ContactsApi.Models;
 using Microsoft.OpenApi.Models;
 using System.IO;
+using Microsoft.AspNetCore.Authentication;
+using ContactsAPI.Handlers;
 
 namespace ContactsAPI
 {
@@ -32,6 +34,10 @@ namespace ContactsAPI
             services.AddDbContext<DatabaseContext>(opt =>
                opt.UseInMemoryDatabase("database"));
             services.AddControllers();
+
+            services.AddAuthentication("BasicAuthentication")
+               .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+
 
             //Register the Swagger generator
             services.AddSwaggerGen((options) =>
@@ -65,6 +71,7 @@ namespace ContactsAPI
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

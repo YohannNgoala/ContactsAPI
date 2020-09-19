@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ContactsApi.Models;
 using System.Data.OleDb;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ContactsAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class SkillsController : ControllerBase
@@ -25,6 +27,7 @@ namespace ContactsAPI.Controllers
         /// </summary>
         // GET: api/Skills
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<SkillModel>>> GetSkill()
         {
             return await _context.Skills.ToListAsync();
@@ -34,6 +37,7 @@ namespace ContactsAPI.Controllers
         /// </summary>
         // GET: api/Skills/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<SkillModel>> GetSkill(long id)
         {
             var skill = await _context.Skills.FindAsync(id);
@@ -71,7 +75,11 @@ namespace ContactsAPI.Controllers
                     return Conflict("This skill name is already used");
                 }
             }
-                        
+            if (_context.Contacts.Where(c => c.ContactModelId == (_context.Skills.Where(s => s.Id == id).First().ContactModelId)).First().UserName
+                != HttpContext.User.Identity.Name)
+            {
+                return BadRequest("This skill isn't from one of your contacts");
+            }
             _context.Entry(skill).State = EntityState.Modified;
 
             try
@@ -111,6 +119,11 @@ namespace ContactsAPI.Controllers
             if (_context.Skills.Any(s => s.ContactModelId == skill.ContactModelId && s.Name == skill.Name))
                 return Conflict("Ths skill already exist, do a PUT request to change it.");
             _context.Skills.Add(skill);
+            if (_context.Contacts.Where(c => c.ContactModelId == skill.ContactModelId).First().UserName
+               != HttpContext.User.Identity.Name)
+            {
+                return BadRequest("This skill isn't from one of your contacts");
+            }
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetSkill", new { id = skill.Id }, skill);
@@ -129,7 +142,11 @@ namespace ContactsAPI.Controllers
             {
                 return NotFound();
             }
-
+            if (_context.Contacts.Where(c => c.ContactModelId == (_context.Skills.Where(s => s.Id == id).First().ContactModelId)).First().UserName
+    != HttpContext.User.Identity.Name)
+            {
+                return BadRequest("This skill isn't from one of your contacts");
+            }
             _context.Skills.Remove(skill);
             await _context.SaveChangesAsync();
 
