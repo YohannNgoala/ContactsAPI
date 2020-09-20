@@ -20,9 +20,9 @@ namespace ContactsAPI.Controllers
         {
             _context = context;
         }
-       
+
         /// <summary>
-        /// Add a new User
+        /// Add a new User /!\  Only fill the fields username and password /!\  
         /// </summary>
         // POST: api/Users
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -41,6 +41,10 @@ namespace ContactsAPI.Controllers
         }
 
 
+
+        /// <summary>
+        /// Delete a user /!\ You can only delete yourself /!\
+        /// </summary>
         [HttpDelete("Unregister/{username}")]       
         public async Task<ActionResult<UserModel>> Unregister(string userName)
         {

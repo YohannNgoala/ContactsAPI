@@ -60,10 +60,8 @@ namespace ContactsAPI.Controllers
         }
 
         /// <summary>
-        /// Insert a new contact in the list /!\ You need to be authenticated) /!\
-        /// <remarks>
-        /// /!\ Leave the Username and ContactModelId by default /!\
-        /// </remarks>
+        /// Insert a new contact in your list. /1\  You need to be authenticated) /1\
+        /// /2\ Only fill the fields firstName, lastName, fullName, address, email, phone /2\
         /// </summary>
         [HttpPost]
         public async Task<ActionResult<ContactModel>> PostContact(ContactModel contact)

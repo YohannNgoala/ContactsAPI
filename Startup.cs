@@ -38,15 +38,43 @@ namespace ContactsAPI
             services.AddAuthentication("BasicAuthentication")
                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
+                
+
+               
+          
 
             //Register the Swagger generator
             services.AddSwaggerGen((options) =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Contacts Api", Version = "v1" });
 
-                var filepath = Path.Combine(System.AppContext.BaseDirectory, "ContactsApi.xml");
+                var filepath = Path.Combine(AppContext.BaseDirectory, "ContactsApi.xml");
                
                 options.IncludeXmlComments(filepath);
+
+                options.AddSecurityDefinition("basic", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "basic",
+                    In = ParameterLocation.Header,
+                    Description = "Basic Authorization header using the Bearer scheme. \nYou need to be register to have authorizations"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+              new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "basic"
+                    }
+                },
+                new string[] {}
+        }
+    });
             });
         }
 

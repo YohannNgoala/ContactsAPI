@@ -17,10 +17,8 @@
         </member>
         <member name="M:ContactsAPI.Controllers.ContactsController.PostContact(ContactModel)">
             <summary>
-            Insert a new contact in the list /!\ You need to be authenticated) /!\
-            <remarks>
-            /!\ Leave the Username and ContactModelId by default /!\
-            </remarks>
+            Insert a new contact in your list. /1\  You need to be authenticated) /1\
+            /2\ Only fill the fields firstName, lastName, fullName, address, email, phone /2\
             </summary>
         </member>
         <member name="M:ContactsAPI.Controllers.ContactsController.PutContact(System.Int64,ContactModel)">
@@ -62,7 +60,12 @@
         </member>
         <member name="M:ContactsAPI.Controllers.UsersController.Register(UserModel)">
             <summary>
-            Add a new User
+            Add a new User /!\  Only fill the fields username and password /!\  
+            </summary>
+        </member>
+        <member name="M:ContactsAPI.Controllers.UsersController.Unregister(System.String)">
+            <summary>
+            Delete a user /!\ You can only delete yourself /!\
             </summary>
         </member>
     </members>
