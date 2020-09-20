@@ -64,9 +64,8 @@ namespace ContactsAPI.Controllers
             {
                 return BadRequest();
             }
-            
-            var contactExist = _context.Contacts.Any(c => c.ContactModelId == skill.ContactModelId);
-            if (!contactExist || CheckContactChanged(skill))
+            var contact = _context.Contacts.AsNoTracking().Where(w => w.ContactModelId == id).SingleOrDefault(); ;
+            if (contact == null || CheckContactChanged(skill))
                 return NotFound("Contact Id is incorrect");
             if (CheckNameChanged(skill))
             {
@@ -75,11 +74,11 @@ namespace ContactsAPI.Controllers
                     return Conflict("This skill name is already used");
                 }
             }
-            if (_context.Contacts.Where(c => c.ContactModelId == (_context.Skills.Where(s => s.Id == id).First().ContactModelId)).First().UserName
-                != HttpContext.User.Identity.Name)
+            if (contact.UserName != HttpContext.User.Identity.Name)
             {
                 return BadRequest("This skill isn't from one of your contacts");
             }
+
             _context.Entry(skill).State = EntityState.Modified;
 
             try
@@ -113,17 +112,25 @@ namespace ContactsAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<SkillModel>> PostSkill(SkillModel skill)
         {
-            var contactExist = _context.Contacts.Any(c => c.ContactModelId == skill.ContactModelId);
-            if (!contactExist)
-                return NotFound("Contact Id is incorrect");
-            if (_context.Skills.Any(s => s.ContactModelId == skill.ContactModelId && s.Name == skill.Name))
-                return Conflict("Ths skill already exist, do a PUT request to change it.");
-            _context.Skills.Add(skill);
-            if (_context.Contacts.Where(c => c.ContactModelId == skill.ContactModelId).First().UserName
-               != HttpContext.User.Identity.Name)
+            var contact = await _context.Contacts.FindAsync(skill.ContactModelId);
+            if (contact == null)
             {
-                return BadRequest("This skill isn't from one of your contacts");
+                return NotFound("Contact Id is incorrect");
             }
+
+            var skillExists = _context.Skills.Any(s => s.ContactModelId == skill.ContactModelId && s.Name == skill.Name);
+
+            if (skillExists)
+            {
+                return Conflict("Ths skill already exist, do a PUT request to change it.");
+            }
+           
+            if (contact.UserName != HttpContext.User.Identity.Name)
+            {
+                return BadRequest("You try to add a skill to someone that isn't your contact");
+            }
+
+            _context.Skills.Add(skill);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetSkill", new { id = skill.Id }, skill);
@@ -142,8 +149,8 @@ namespace ContactsAPI.Controllers
             {
                 return NotFound();
             }
-            if (_context.Contacts.Where(c => c.ContactModelId == (_context.Skills.Where(s => s.Id == id).First().ContactModelId)).First().UserName
-    != HttpContext.User.Identity.Name)
+            var contact = await _context.Contacts.FindAsync(skill.ContactModelId);
+            if (contact.UserName != HttpContext.User.Identity.Name)
             {
                 return BadRequest("This skill isn't from one of your contacts");
             }

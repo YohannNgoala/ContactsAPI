@@ -90,14 +90,16 @@ namespace ContactsAPI.Controllers
             {
                 return BadRequest("Contact Id missmatch");
             }
-            if (!_context.Contacts.Any(a => a.ContactModelId == contact.ContactModelId))
+            var contactModel =  _context.Contacts.AsNoTracking().Where(w => w.ContactModelId == id).SingleOrDefault();
+            if ( contactModel == null)
             {
                 return NotFound("Contact doesn't exist");
             }
-            if (_context.Contacts.Where(c => c.ContactModelId == id).First().UserName != HttpContext.User.Identity.Name)
+            if (contactModel.UserName != HttpContext.User.Identity.Name)
             {
-                return BadRequest("This is not your contact");
+                return Unauthorized("This is not your contact");
             }
+            contact.UserName = HttpContext.User.Identity.Name;
             _context.Entry(contact).State = EntityState.Modified;
             try
             {
@@ -128,9 +130,9 @@ namespace ContactsAPI.Controllers
             {
                 return NotFound();
             }
-            if (_context.Contacts.Where(c => c.ContactModelId == id).First().UserName != HttpContext.User.Identity.Name)
+            if (contactModel.UserName != HttpContext.User.Identity.Name)
             {
-                return BadRequest("This is not your contact");
+                return Unauthorized("This is not your contact");
             }
             _context.Contacts.Remove(contactModel);
             await _context.SaveChangesAsync();
