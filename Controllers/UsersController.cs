@@ -39,5 +39,28 @@ namespace ContactsAPI.Controllers
 
             return Ok();
         }
+
+
+        [HttpDelete("Unregister/{username}")]       
+        public async Task<ActionResult<UserModel>> Unregister(string userName)
+        {
+            if (userName != HttpContext.User.Identity.Name)
+            {
+                return Unauthorized("You can't delete an other user");
+            }
+            var user = await _context.Users.FindAsync(userName);
+            
+            _context.Users.Remove(user);
+            var contacts = _context.Contacts.Where(c => c.UserName == userName);
+            foreach(var contact in contacts)
+            {
+                var skills = _context.Skills.Where(s => s.ContactModelId == contact.ContactModelId);
+                _context.Skills.RemoveRange(skills);
+            }
+            _context.Contacts.RemoveRange(contacts);
+            await _context.SaveChangesAsync();
+
+            return user;
+        }
     }
 }

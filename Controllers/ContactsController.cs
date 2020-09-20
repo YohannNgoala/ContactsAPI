@@ -60,7 +60,7 @@ namespace ContactsAPI.Controllers
         }
 
         /// <summary>
-        /// Insert a new contact in the list
+        /// Insert a new contact in the list /!\ You need to be authenticated) /!\
         /// <remarks>
         /// /!\ Leave the Username and ContactModelId by default /!\
         /// </remarks>
@@ -80,7 +80,7 @@ namespace ContactsAPI.Controllers
         }
 
         /// <summary>
-        /// Change a single contact in the list from ID
+        /// Change a single contact in the list from ID /!\ You need to be authenticated) /!\
         /// </summary>
         [HttpPut("{id}")]
         [AllowAnonymous]
@@ -120,7 +120,7 @@ namespace ContactsAPI.Controllers
         }
 
         /// <summary>
-        /// Delete a contact from the list
+        /// Delete a contact from the list /!\ You need to be authenticated) /!\
         /// </summary>
         [HttpDelete("{id}")]
         public async Task<ActionResult<ContactModel>> DeleteContactModel(long id)
@@ -135,9 +135,16 @@ namespace ContactsAPI.Controllers
                 return Unauthorized("This is not your contact");
             }
             _context.Contacts.Remove(contactModel);
+            RemoveSkills(id);
             await _context.SaveChangesAsync();
 
             return contactModel;
+        }
+
+        private void RemoveSkills(long contactId)
+        {
+            var skills = _context.Skills.Where(s => s.ContactModelId == contactId);
+            _context.Skills.RemoveRange(skills);
         }
     }
 }

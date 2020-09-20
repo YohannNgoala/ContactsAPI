@@ -17,7 +17,7 @@
         </member>
         <member name="M:ContactsAPI.Controllers.ContactsController.PostContact(ContactModel)">
             <summary>
-            Insert a new contact in the list
+            Insert a new contact in the list /!\ You need to be authenticated) /!\
             <remarks>
             /!\ Leave the Username and ContactModelId by default /!\
             </remarks>
@@ -25,12 +25,12 @@
         </member>
         <member name="M:ContactsAPI.Controllers.ContactsController.PutContact(System.Int64,ContactModel)">
             <summary>
-            Change a single contact in the list from ID
+            Change a single contact in the list from ID /!\ You need to be authenticated) /!\
             </summary>
         </member>
         <member name="M:ContactsAPI.Controllers.ContactsController.DeleteContactModel(System.Int64)">
             <summary>
-            Delete a contact from the list
+            Delete a contact from the list /!\ You need to be authenticated) /!\
             </summary>
         </member>
         <member name="M:ContactsAPI.Controllers.SkillsController.GetSkill">
