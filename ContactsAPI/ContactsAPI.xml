@@ -20,11 +20,35 @@
             Insert a new contact in your list. /1\  You need to be authenticated) /1\
             /2\ Only fill the fields firstName, lastName, fullName, address, email, phone /2\
             </summary>
+            <remarks>
+            {
+             
+                "firstname" : "string",
+                "lastname" : "string",
+                "fullname" : "string",
+                "address" : "string",
+                "email" : "string",
+                "phone" : "string"
+            }
+            
+            </remarks>
         </member>
         <member name="M:ContactsAPI.Controllers.ContactsController.PutContact(System.Int64,ContactModel)">
             <summary>
             Change a single contact in the list from ID /!\ You need to be authenticated) /!\
             </summary>
+            /// <remarks>
+            {
+             
+                "contactModelId" : long,
+                "firstname" : "string",
+                "lastname" : "string",
+                "fullname" : "string",
+                "address" : "string",
+                "email" : "string",
+                "phone" : "string"
+            }
+            </remarks>
         </member>
         <member name="M:ContactsAPI.Controllers.ContactsController.DeleteContactModel(System.Int64)">
             <summary>
@@ -45,13 +69,24 @@
             <summary>
             Change a single skill in the list from its ID
             </summary>
+            <remarks>
+            {
+                "id" : long,
+                "name": "string",
+                "level": "string",
+                "contactModelId" : long
+            }
+            </remarks>
         </member>
         <member name="M:ContactsAPI.Controllers.SkillsController.PostSkill(SkillModel)">
-            <summary>
-            Insert a new skill in the list
-            </summary>
-            <remarks>The skill's ContactModelId should match with an existing contact's ContactModelId.
-            The a contact can't have two skills with the same name</remarks>
+            <remarks>
+            {
+            
+                "name": "string",
+                "level": "string",
+                "contactModelId" : long
+            }
+            </remarks>
         </member>
         <member name="M:ContactsAPI.Controllers.SkillsController.DeleteSkill(System.Int64)">
             <summary>
@@ -62,6 +97,13 @@
             <summary>
             Add a new User /!\  Only fill the fields username and password /!\  
             </summary>
+            <remarks>
+            {
+            
+                "username" : "string",
+                "password" : "string",
+            }
+            </remarks>
         </member>
         <member name="M:ContactsAPI.Controllers.UsersController.Unregister(System.String)">
             <summary>

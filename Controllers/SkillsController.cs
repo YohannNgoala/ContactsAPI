@@ -54,6 +54,14 @@ namespace ContactsAPI.Controllers
         /// <summary>
         /// Change a single skill in the list from its ID
         /// </summary>
+        /// <remarks>
+        /// {
+        ///     "id" : long,
+        ///     "name": "string",
+        ///     "level": "string",
+        ///     "contactModelId" : long
+        /// }
+        /// </remarks>
         // PUT: api/Skills/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -109,6 +117,14 @@ namespace ContactsAPI.Controllers
         // POST: api/Skills
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <remarks>
+        /// {
+        /// 
+        ///     "name": "string",
+        ///     "level": "string",
+        ///     "contactModelId" : long
+        /// }
+        /// </remarks>
         [HttpPost]
         public async Task<ActionResult<SkillModel>> PostSkill(SkillModel skill)
         {

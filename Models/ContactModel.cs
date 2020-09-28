@@ -1,10 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 
 public class ContactModel
@@ -25,5 +29,4 @@ public class ContactModel
     public string Phone { get; set; }
     public virtual ICollection<SkillModel> SkillModel { get; set; }
     public string UserName { get; set; }
-
 }

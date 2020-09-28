@@ -63,6 +63,18 @@ namespace ContactsAPI.Controllers
         /// Insert a new contact in your list. /1\  You need to be authenticated) /1\
         /// /2\ Only fill the fields firstName, lastName, fullName, address, email, phone /2\
         /// </summary>
+        /// <remarks>
+        /// {
+        ///  
+        ///     "firstname" : "string",
+        ///     "lastname" : "string",
+        ///     "fullname" : "string",
+        ///     "address" : "string",
+        ///     "email" : "string",
+        ///     "phone" : "string"
+        /// }
+        /// 
+        /// </remarks>
         [HttpPost]
         public async Task<ActionResult<ContactModel>> PostContact(ContactModel contact)
         {
@@ -80,6 +92,18 @@ namespace ContactsAPI.Controllers
         /// <summary>
         /// Change a single contact in the list from ID /!\ You need to be authenticated) /!\
         /// </summary>
+        /// /// <remarks>
+        /// {
+        ///  
+        ///     "contactModelId" : long,
+        ///     "firstname" : "string",
+        ///     "lastname" : "string",
+        ///     "fullname" : "string",
+        ///     "address" : "string",
+        ///     "email" : "string",
+        ///     "phone" : "string"
+        /// }
+        /// </remarks>
         [HttpPut("{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> PutContact(long id, ContactModel contact)
